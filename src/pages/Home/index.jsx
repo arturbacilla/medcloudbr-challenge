@@ -1,8 +1,13 @@
 import React from 'react';
+import Header from '../../components/Header';
+import PatientsTable from '../../components/PatientsTable';
 
 function Home() {
   return (
-    <main>Home</main>
+    <main>
+      <Header />
+      <PatientsTable />
+    </main>
   );
 }
 
