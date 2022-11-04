@@ -1,71 +1,70 @@
-# Development challenge
+# Getting Started with Create React App
 
-![logo medcloud-03 white copy](https://user-images.githubusercontent.com/46347123/158176045-de9fefb0-35e2-4515-83ff-c132608aa870.png)
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-About Medcloud:
+## Available Scripts
 
-We make exams and medical data management more flexible, secure and effective by accelerating the transition from clinics and hospitals to the cloud.
-The RIS and PACS systems have been practically the same for the past 25 years. Interoperability problems, high costs and a lack of understanding about the patient's access to his medical records.
+In the project directory, you can run:
 
-These points defined limits for the doctor-patient relationship and barriers to radiology workflows. We are revolutionizing this through a Care Coordination based solution that improves workflows for providers and integrates doctors and patients for a better experience.
+### `npm start`
 
-Since our foundation, almost 10 years ago, we have prioritized excellence in the management of health data, structuring workflows of health professionals, clinics, laboratories and hospitals for assertive and quality diagnostics.
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-We understand that behind each medical record there is a patient seeking to improve his health and the hope of family members for his well being. After all, we are all patients, and Medcloud's mission is to help you live longer and better. #PatientFirst
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-Medcloud's challenge for Dev Full Stack.
+### `npm test`
 
-## Goal
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-- To develop a web application (CRUD) to manage patient registers (Patient's name, birth date, email and address) using a cloud database.
+### `npm run build`
 
-## Required
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-- You need to develop both the front-end and the back-end.
-- In the front-end you MUST use React.
-- In the back-end you MUST use Node.js and AWS free-tier.
-- The patient data should not be static or local.
-- Field validation (date, required fields, etc)
-- AWS RDS MySQL, PostgreSQL or DynamoDB as database.
-- AWS Lambda for serveless computing.
-- AWS API Gateway for managing your REST API.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## Extra Points
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-- Cache the data in-browser.
-- Pagination.
-- Use Material UI - https://material-ui.com.
-- A cool design.
+### `npm run eject`
 
-## References
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-- Intro to React: https://reactjs.org/tutorial/tutorial.html.
-- Core Components of Amazon DynamoDB: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html.
-- Getting Started with DynamoDB: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html.
-- Getting started with AWS Lambda: https://docs.aws.amazon.com/lambda/latest/dg/getting-started.html.
-- Create a REST API with Lambda integrations in Amazon API Gateway: https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-getting-started-with-rest-apis.html.
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-## What will be evaluated:
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-- Clean and organized code (naming, etc.)
-- Knowledge of patterns (PSRs, design patterns, SOLID)
-- Be consistent and know how to argue your choices
-- Present solutions you master
-- Data Modeling
-- Code maintainability
-- Error handling
-- Architecture (structuring thought before writing)
-- Affection in decoupling components (other layers, service, repository)
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-According to the above criteria, we will evaluate your test in order to proceed to the technical interview. If you have not acceptably achieved what we are proposing above, we will not proceed with the process.
+## Learn More
 
-## Delivery
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-You MUST fork this repository to your own account and push you code to it. 
-When you finish it, you must send a email to cv@medcloud.com.br with your curriculum and your fork.
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-Good luck! Any doubts, feel free to send an email to cv@medcloud.com.br.
+### Code Splitting
 
-## For the day of the technical interview and code review
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-On the date set by the recruiter, have your application running on your local machine to run the tests and to show us the points developed and possible questions. We will do a code review together with you as if you were already on our team, you will be able to explain what you thought, how you architected and how the project can evolve. Good luck!
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
