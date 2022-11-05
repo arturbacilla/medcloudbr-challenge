@@ -1,27 +1,23 @@
 const headCells = [
   {
     id: 'name',
-    numeric: false,
-    disablePadding: false,
     label: 'Name',
+    width: '25rem',
   },
   {
     id: 'email',
-    numeric: false,
-    disablePadding: false,
     label: 'E-mail',
+    width: '30rem',
   },
   {
     id: 'birthdate',
-    numeric: false,
-    disablePadding: false,
     label: 'Birthdate',
+    width: '10rem',
   },
   {
     id: 'address',
-    numeric: true,
-    disablePadding: false,
     label: 'Address',
+    width: '30rem',
   },
 ];
 

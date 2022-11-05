@@ -11,8 +11,9 @@ import Checkbox from '@mui/material/Checkbox';
 import PatientsTableHeader from './PatientsTableHeader';
 import PatientsTableToolbar from './PatientsTableToolbar';
 
-function createData(name, email, birthdate, address) {
+function createData(id, name, email, birthdate, address) {
   return {
+    id,
     name,
     email,
     birthdate,
@@ -21,8 +22,8 @@ function createData(name, email, birthdate, address) {
 }
 
 const rows = [
-  createData('Admin', 'admin@admin.com', '17/09/1992', 'Rua dos Bobos, 0'),
-  createData('Bob', 'bob@teste.com', '08/04/2002', 'Rua dos Baixinhos, 333'),
+  createData('id-adm', 'Admin', 'admin@admin.com', '17/09/1992', 'Rua dos Bobos, 0'),
+  createData('id-2', 'Artur Bacilla', 'artur.bacilla1@gmail.com', '17/09/1992', 'Rua Parnaíba, 159, Curitiba, Paraná'),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -97,7 +98,7 @@ export default function PatientsTable() {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box sx={{ width: '80%' }}>
+    <Box sx={{ width: { xs: '100%', lg: '80%' }, maxWidth: '962px', marginInline: 'auto' }}>
       <Paper sx={{ width: '100%', mb: 5, mt: 10 }}>
         <PatientsTableToolbar numSelected={selected.length} />
         <TableContainer>
@@ -124,34 +125,52 @@ export default function PatientsTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      // onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
+                      <TableCell padding="none" sx={{ width: '5%' }}>
                         <Checkbox
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
                             'aria-labelledby': labelId,
                           }}
+                          onClick={(event) => handleClick(event, row.name)}
                         />
                       </TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
-                        align="center"
+                        align="left"
+                        sx={{ p: '6px 0px' }}
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="center">{row.email}</TableCell>
-                      <TableCell align="center">{row.birthdate}</TableCell>
-                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{ p: '6px 0px' }}
+                      >
+                        {row.email}
+
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{ p: '6px 0px' }}
+                      >
+                        {row.birthdate}
+
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{ p: '6px 0px', width: '30%', overflowWrap: 'break-word' }}
+                      >
+                        {row.address}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

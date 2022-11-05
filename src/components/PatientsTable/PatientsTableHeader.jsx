@@ -13,7 +13,7 @@ import headCells from './structure';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.common.white,
+    color: theme.palette.common.black,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -31,22 +31,26 @@ export default function PatientsTableHeader(props) {
   return (
     <TableHead>
       <TableRow>
-        <StyledTableCell padding="checkbox">
+        <StyledTableCell padding="none" sx={{ width: '5%' }}>
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              'aria-label': 'select all desserts',
+              'aria-label': 'select all patients',
             }}
           />
         </StyledTableCell>
         {headCells.map((headCell) => (
           <StyledTableCell
             key={headCell.id}
-            align="center"
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            align="left"
+            sx={{
+              fontWeight: 700,
+              p: '10px 0px',
+              width: headCell.width,
+            }}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
