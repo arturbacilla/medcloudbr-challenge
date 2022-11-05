@@ -2,22 +2,22 @@ const headCells = [
   {
     id: 'name',
     label: 'Name',
-    width: '25rem',
+    width: '20%',
   },
   {
     id: 'email',
     label: 'E-mail',
-    width: '30rem',
+    width: '25%',
   },
   {
     id: 'birthdate',
     label: 'Birthdate',
-    width: '10rem',
+    width: '10%',
   },
   {
     id: 'address',
     label: 'Address',
-    width: '30rem',
+    width: '45%',
   },
 ];
 

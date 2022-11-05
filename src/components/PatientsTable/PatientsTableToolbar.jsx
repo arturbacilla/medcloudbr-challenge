@@ -6,7 +6,9 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 export default function PatientsTableToolbar(props) {
   const { numSelected } = props;
@@ -15,8 +17,10 @@ export default function PatientsTableToolbar(props) {
     <Toolbar
       variant="dense"
       sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
+        display: 'flex',
+        justifyContent: 'space-between',
+        pl: { xs: 1 },
+        pr: { xs: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         }),
@@ -33,14 +37,13 @@ export default function PatientsTableToolbar(props) {
           selected
         </Typography>
       ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Patients
-        </Typography>
+        <TextField
+          id="outlined-helperText"
+          size="small"
+          margin="dense"
+          label="Search"
+          placeholder="Name"
+        />
       )}
 
       {numSelected > 0 ? (
@@ -50,11 +53,9 @@ export default function PatientsTableToolbar(props) {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <Button variant="contained" size="small" startIcon={<AddIcon />}>
+          New
+        </Button>
       )}
     </Toolbar>
   );

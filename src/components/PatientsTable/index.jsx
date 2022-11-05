@@ -8,8 +8,10 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
+import { useNavigate } from 'react-router-dom';
 import PatientsTableHeader from './PatientsTableHeader';
 import PatientsTableToolbar from './PatientsTableToolbar';
+import Navigation from '../Navigation';
 
 function createData(id, name, email, birthdate, address) {
   return {
@@ -48,6 +50,7 @@ export default function PatientsTable() {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const Navigate = useNavigate();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -99,7 +102,8 @@ export default function PatientsTable() {
 
   return (
     <Box sx={{ width: { xs: '100%', lg: '80%' }, maxWidth: '962px', marginInline: 'auto' }}>
-      <Paper sx={{ width: '100%', mb: 5, mt: 10 }}>
+      <Navigation />
+      <Paper sx={{ width: '100%', mb: 5, mt: 0 }}>
         <PatientsTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -125,7 +129,6 @@ export default function PatientsTable() {
                   return (
                     <TableRow
                       hover
-                      // onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -148,26 +151,28 @@ export default function PatientsTable() {
                         scope="row"
                         align="left"
                         sx={{ p: '6px 0px' }}
+                        onClick={() => Navigate(`/patient/${row.id}`)}
                       >
                         {row.name}
                       </TableCell>
                       <TableCell
                         align="left"
                         sx={{ p: '6px 0px' }}
+                        onClick={() => Navigate(`/patient/${row.id}`)}
                       >
                         {row.email}
-
                       </TableCell>
                       <TableCell
                         align="left"
                         sx={{ p: '6px 0px' }}
+                        onClick={() => Navigate(`/patient/${row.id}`)}
                       >
                         {row.birthdate}
-
                       </TableCell>
                       <TableCell
                         align="left"
                         sx={{ p: '6px 0px', width: '30%', overflowWrap: 'break-word' }}
+                        onClick={() => Navigate(`/patient/${row.id}`)}
                       >
                         {row.address}
                       </TableCell>
