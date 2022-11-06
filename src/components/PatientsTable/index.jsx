@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import PatientsTableHeader from './PatientsTableHeader';
 import PatientsTableToolbar from './PatientsTableToolbar';
 import Navigation from '../Navigation';
+import NewPatientRow from '../NewPatientRow';
+import PatientsContext from '../../context/PatientsContext';
 
 function createData(id, name, email, birthdate, address) {
   return {
@@ -50,6 +52,7 @@ export default function PatientsTable() {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { isAddingNew } = useContext(PatientsContext);
   const Navigate = useNavigate();
 
   const handleRequestSort = (event, property) => {
@@ -110,6 +113,9 @@ export default function PatientsTable() {
       <Navigation />
       <Paper sx={{ width: '100%', mb: 5, mt: 0 }}>
         <PatientsTableToolbar numSelected={selected.length} />
+        {
+          isAddingNew && <NewPatientRow />
+        }
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

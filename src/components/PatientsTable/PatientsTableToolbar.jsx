@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,9 +9,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import PatientsContext from '../../context/PatientsContext';
 
 export default function PatientsTableToolbar(props) {
   const { numSelected } = props;
+  const { isAddingNew, setIsAddingNew } = useContext(PatientsContext);
 
   return (
     <Toolbar
@@ -54,9 +56,16 @@ export default function PatientsTableToolbar(props) {
           </IconButton>
         </Tooltip>
       ) : (
-        <Button variant="contained" size="small" startIcon={<AddIcon />}>
+        isAddingNew || (
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<AddIcon />}
+          onClick={() => setIsAddingNew(true)}
+        >
           New
         </Button>
+        )
       )}
     </Toolbar>
   );
