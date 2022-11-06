@@ -9,13 +9,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;
+}
+
+.clicableRow:hover {
+    cursor: pointer;
 }

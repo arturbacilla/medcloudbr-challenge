@@ -19,6 +19,7 @@ export default function PatientsTableToolbar(props) {
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
+        minHeight: '55px',
         pl: { xs: 1 },
         pr: { xs: 1 },
         ...(numSelected > 0 && {

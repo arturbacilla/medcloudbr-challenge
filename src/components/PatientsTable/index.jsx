@@ -101,7 +101,12 @@ export default function PatientsTable() {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box sx={{ width: { xs: '100%', lg: '80%' }, maxWidth: '962px', marginInline: 'auto' }}>
+    <Box sx={{
+      width: { xs: '100%', lg: '90%' },
+      maxWidth: '1090px',
+      marginInline: 'auto',
+    }}
+    >
       <Navigation />
       <Paper sx={{ width: '100%', mb: 5, mt: 0 }}>
         <PatientsTableToolbar numSelected={selected.length} />
@@ -134,6 +139,7 @@ export default function PatientsTable() {
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
+                      className="clicableRow"
                     >
                       <TableCell padding="none" sx={{ width: '5%' }}>
                         <Checkbox
