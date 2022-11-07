@@ -23,6 +23,7 @@ function PatientRow({ row, isItemSelected, labelId, handleClick }) {
   const [isEditing, setIsEditing] = useState(false);
   const [newPatientInfo, setNewPatientInfo] = useState({});
   const [editFieldIsValid, setEditFieldIsValid] = useState(initialValidation);
+  const [showEditButton, setShowEditButton] = useState(false);
 
   const checkSchema = (id, value) => {
     const schemaValidate = newPatientSchema[id].validate(value);
@@ -62,6 +63,8 @@ function PatientRow({ row, isItemSelected, labelId, handleClick }) {
       key={row.name}
       selected={isItemSelected}
       className="clicableRow"
+      onMouseEnter={() => setShowEditButton(true)}
+      onMouseLeave={() => setShowEditButton(false)}
     >
       <TableCell padding="none" sx={{ width: '5%' }}>
         <Checkbox
@@ -162,11 +165,12 @@ function PatientRow({ row, isItemSelected, labelId, handleClick }) {
       </TableCell>
       <TableCell padding="none" sx={{ width: '5%' }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', pr: 1 }}>
-          { !isEditing ? (
+          { !isEditing && showEditButton ? (
             <IconButton sx={{ p: 1 }} onClick={() => setIsEditing(true)}>
               <EditIcon sx={{ fontSize: '1.5rem' }} />
             </IconButton>
           ) : (
+            isEditing && (
             <>
               <IconButton sx={{ p: 0 }}>
                 <CheckBoxOutlinedIcon sx={{ fontSize: '1.5rem' }} color="success" />
@@ -175,6 +179,7 @@ function PatientRow({ row, isItemSelected, labelId, handleClick }) {
                 <DisabledByDefaultOutlinedIcon sx={{ fontSize: '1.5rem' }} color="error" />
               </IconButton>
             </>
+            )
           )}
         </Box>
       </TableCell>
