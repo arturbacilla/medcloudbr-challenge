@@ -67,6 +67,7 @@ export default function PatientsTableHeader(props) {
             </TableSortLabel>
           </StyledTableCell>
         ))}
+        <StyledTableCell padding="none" sx={{ width: '10%' }} />
       </TableRow>
     </TableHead>
   );

@@ -8,12 +8,17 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
+import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
 import { useNavigate } from 'react-router-dom';
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import DisabledByDefaultOutlinedIcon from '@mui/icons-material/DisabledByDefaultOutlined';
 import PatientsTableHeader from './PatientsTableHeader';
 import PatientsTableToolbar from './PatientsTableToolbar';
 import Navigation from '../Navigation';
 import NewPatientRow from '../NewPatientRow';
 import PatientsContext from '../../context/PatientsContext';
+import headCells from './structure';
 
 function createData(id, name, email, birthdate, address) {
   return {
@@ -52,7 +57,7 @@ export default function PatientsTable() {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { isAddingNew } = useContext(PatientsContext);
+  const { isAddingNew, isEditing, setIsEditing } = useContext(PatientsContext);
   const Navigate = useNavigate();
 
   const handleRequestSort = (event, property) => {
@@ -162,31 +167,49 @@ export default function PatientsTable() {
                         id={labelId}
                         scope="row"
                         align="left"
-                        sx={{ p: '6px 0px' }}
+                        sx={{ p: '6px 0px', width: headCells[0].width }}
                         onClick={() => Navigate(`/patient/${row.id}`)}
                       >
                         {row.name}
                       </TableCell>
                       <TableCell
                         align="left"
-                        sx={{ p: '6px 0px' }}
+                        sx={{ p: '6px 0px', width: headCells[1].width }}
                         onClick={() => Navigate(`/patient/${row.id}`)}
                       >
                         {row.email}
                       </TableCell>
                       <TableCell
                         align="left"
-                        sx={{ p: '6px 0px' }}
+                        sx={{ p: '6px 0px', width: headCells[2].width }}
                         onClick={() => Navigate(`/patient/${row.id}`)}
                       >
                         {row.birthdate}
                       </TableCell>
                       <TableCell
                         align="left"
-                        sx={{ p: '6px 0px', width: '30%', overflowWrap: 'break-word' }}
+                        sx={{ p: '6px 0px', width: 'auto', overflowWrap: 'break-word' }}
                         onClick={() => Navigate(`/patient/${row.id}`)}
                       >
                         {row.address}
+                      </TableCell>
+                      <TableCell padding="none" sx={{ width: '5%' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', pr: 1 }}>
+                          { !isEditing ? (
+                            <IconButton sx={{ p: 1 }}>
+                              <EditIcon sx={{ fontSize: '1.5rem' }} onClick={() => setIsEditing(true)} />
+                            </IconButton>
+                          ) : (
+                            <>
+                              <IconButton sx={{ p: 0 }}>
+                                <CheckBoxOutlinedIcon sx={{ fontSize: '1.5rem' }} color="success" />
+                              </IconButton>
+                              <IconButton sx={{ p: 0 }} onClick={() => setIsEditing(false)}>
+                                <DisabledByDefaultOutlinedIcon sx={{ fontSize: '1.5rem' }} color="error" />
+                              </IconButton>
+                            </>
+                          )}
+                        </Box>
                       </TableCell>
                     </TableRow>
                   );
