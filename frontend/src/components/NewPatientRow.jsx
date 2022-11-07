@@ -61,7 +61,7 @@ function NewPatientRow() {
                 align="center"
                 sx={{ p: '6px 0px', width: headCells[0].width }}
               >
-                <Tooltip title="Min 2 characters." placement="top" arrow>
+                <Tooltip title="Min 2 characters." placement="top" followCursor arrow>
                   <Input
                     required
                     id="name"
@@ -80,7 +80,7 @@ function NewPatientRow() {
                 align="center"
                 sx={{ p: '6px 0px', width: headCells[1].width }}
               >
-                <Tooltip title="Should be valid .net, .com or .br" placement="top" arrow>
+                <Tooltip title="Should be valid .net, .com or .br" placement="top" followCursor arrow>
                   <Input
                     required
                     id="email"
@@ -99,7 +99,7 @@ function NewPatientRow() {
                 align="center"
                 sx={{ p: '6px 0px', width: headCells[2].width }}
               >
-                <Tooltip title="Format: DD/MM/YYYY." placement="top" arrow>
+                <Tooltip title="Format: DD/MM/YYYY." placement="top" followCursor arrow>
                   <Input
                     required
                     id="birthdate"
@@ -118,7 +118,7 @@ function NewPatientRow() {
                 align="center"
                 sx={{ p: '6px 0px', width: '37.5%' }}
               >
-                <Tooltip title="Min 2 characters." placement="top" arrow>
+                <Tooltip title="Min 2 characters." placement="top" followCursor arrow>
                   <Input
                     required
                     id="address"
