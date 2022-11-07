@@ -7,18 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
-import { useNavigate } from 'react-router-dom';
-import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
-import DisabledByDefaultOutlinedIcon from '@mui/icons-material/DisabledByDefaultOutlined';
 import PatientsTableHeader from './PatientsTableHeader';
 import PatientsTableToolbar from './PatientsTableToolbar';
-import Navigation from '../Navigation';
 import NewPatientRow from '../NewPatientRow';
 import PatientsContext from '../../context/PatientsContext';
-import headCells from './structure';
+import Navigation from '../Navigation';
+import PatientRow from './PatientRow';
 
 function createData(id, name, email, birthdate, address) {
   return {
@@ -57,8 +51,7 @@ export default function PatientsTable() {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { isAddingNew, isEditing, setIsEditing } = useContext(PatientsContext);
-  const Navigate = useNavigate();
+  const { isAddingNew } = useContext(PatientsContext);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -143,75 +136,13 @@ export default function PatientsTable() {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
+                    <PatientRow
+                      row={row}
                       key={row.name}
-                      selected={isItemSelected}
-                      className="clicableRow"
-                    >
-                      <TableCell padding="none" sx={{ width: '5%' }}>
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                          onClick={(event) => handleClick(event, row.name)}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        align="left"
-                        sx={{ p: '6px 0px', width: headCells[0].width }}
-                        onClick={() => Navigate(`/patient/${row.id}`)}
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{ p: '6px 0px', width: headCells[1].width }}
-                        onClick={() => Navigate(`/patient/${row.id}`)}
-                      >
-                        {row.email}
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{ p: '6px 0px', width: headCells[2].width }}
-                        onClick={() => Navigate(`/patient/${row.id}`)}
-                      >
-                        {row.birthdate}
-                      </TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{ p: '6px 0px', width: 'auto', overflowWrap: 'break-word' }}
-                        onClick={() => Navigate(`/patient/${row.id}`)}
-                      >
-                        {row.address}
-                      </TableCell>
-                      <TableCell padding="none" sx={{ width: '5%' }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', pr: 1 }}>
-                          { !isEditing ? (
-                            <IconButton sx={{ p: 1 }}>
-                              <EditIcon sx={{ fontSize: '1.5rem' }} onClick={() => setIsEditing(true)} />
-                            </IconButton>
-                          ) : (
-                            <>
-                              <IconButton sx={{ p: 0 }}>
-                                <CheckBoxOutlinedIcon sx={{ fontSize: '1.5rem' }} color="success" />
-                              </IconButton>
-                              <IconButton sx={{ p: 0 }} onClick={() => setIsEditing(false)}>
-                                <DisabledByDefaultOutlinedIcon sx={{ fontSize: '1.5rem' }} color="error" />
-                              </IconButton>
-                            </>
-                          )}
-                        </Box>
-                      </TableCell>
-                    </TableRow>
+                      isItemSelected={isItemSelected}
+                      labelId={labelId}
+                      handleClick={handleClick}
+                    />
                   );
                 })}
               {emptyRows > 0 && (
