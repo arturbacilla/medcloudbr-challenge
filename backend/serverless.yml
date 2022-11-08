@@ -1,0 +1,39 @@
+service: medcloud-backend
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: sa-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+        - dynamodb:GetItem
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:UpdateItem
+      Resource:
+        - "arn:aws:dynamodb:sa-east-1:928705830820:table/medcloudbr"
+  apiName: medcloudbr
+  apiGateway:
+    restApiId: 7ql9ymkg4m
+    restApiRootResourceId: o4i2ywt3xh
+    restApiResources:
+      '/patients': kbsmpw
+      '/patients/{id}': bffabg
+
+functions:
+  getPatients:
+    handler: getPatients.handler
+  getPatient:
+    handler: getPatient.handler
+  cretePatient:
+    handler: cretePatient.handler
+  updatePatient:
+    handler: updatePatient.handler
+  deletePatient:
+    handler: deletePatient.handler
+  
