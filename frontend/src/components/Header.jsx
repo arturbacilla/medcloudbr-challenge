@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import validateUser from '../helpers/validateUser';
 
 const pages = ['Patients', 'Item 2', '...'];
 const settings = ['...', 'Logout'];
@@ -17,6 +18,7 @@ const settings = ['...', 'Logout'];
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  validateUser('Deny', '/login');
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);

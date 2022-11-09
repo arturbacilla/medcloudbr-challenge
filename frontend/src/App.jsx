@@ -9,8 +9,11 @@ import Patient from './pages/Patient';
 import NotFound from './pages/NotFound';
 import './App.css';
 import PatientsProvider from './context/PatientsProvider';
+import { URL } from './services/api';
 
 function App() {
+  // eslint-disable-next-line no-console
+  console.log(`Reading backend on ${URL}`);
   return (
     <ThemeProvider theme={themeOptions}>
       <PatientsProvider>

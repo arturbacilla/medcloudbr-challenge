@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -9,19 +10,25 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Link from '@mui/material/Link';
+import { executeLogin } from '../../services/api';
 
 import './login.css';
-import { Typography } from '@mui/material';
+import parseResult from '../../helpers/parseResult';
+import validateUser from '../../helpers/validateUser';
 
 function Login() {
+  const Navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [values, setValues] = useState({
     email: '',
     password: '',
     showPassword: false,
   });
+  validateUser('Allow', '/');
 
   useEffect(() => {
     const { email, password } = values;
@@ -29,6 +36,7 @@ function Login() {
   }, [values]);
 
   const handleChange = (prop) => (event) => {
+    setErrorMsg('');
     setValues({ ...values, [prop]: event.target.value });
   };
 
@@ -41,6 +49,31 @@ function Login() {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const setLocalStorage = (token) => {
+    localStorage.setItem('token', token);
+  };
+
+  const login = async (event) => {
+    event.preventDefault();
+    const endpoint = '/login';
+    const { email, password } = values;
+    const result = await executeLogin(endpoint, { email, password });
+    if (Object.keys(result).includes('name') && result.name === 'AxiosError') {
+      setErrorMsg('Internal Server Error');
+      return false;
+    }
+    const { statusCode, body } = parseResult(result);
+    switch (statusCode) {
+      case 200:
+        setLocalStorage(body.token);
+        return Navigate('/');
+      case 500:
+        return setErrorMsg('Internal server error.');
+      default:
+        return setErrorMsg(body);
+    }
   };
 
   return (
@@ -140,7 +173,18 @@ function Login() {
               />
             </Tooltip>
           </Box>
-          <Button variant="contained" size="small" disabled={isDisabled}>Login</Button>
+          <Button
+            variant="contained"
+            size="small"
+            disabled={isDisabled}
+            onClick={(event) => login(event)}
+          >
+            Login
+          </Button>
+          {
+            errorMsg.length !== 0
+            && <Typography variant="caption" color="error">{errorMsg}</Typography>
+          }
         </Box>
       </Paper>
     </Container>
