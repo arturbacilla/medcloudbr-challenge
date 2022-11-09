@@ -82,20 +82,21 @@ function Login() {
             alt="Logo"
             src="https://medcloud.link/svgs/medcloud.svg"
           />
-          <Typography variant="caption" textAlign="center">
+          <Typography variant="caption" textAlign="center" sx={{ width: { xs: '70%', md: '90%' } }}>
             Esta aplicação é uma demonstração desenvolvida por
             <Link href="https://www.linkedin.com/in/arturbacilla/" color="inherit">
               <span> Artur Bacilla</span>
             </Link>
           </Typography>
+
         </Box>
         <Box sx={{
-          minWidth: '50%',
+          width: { xs: '90%', md: '50%' },
+          height: { xs: '50%', md: '90%' },
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
-          gap: { xs: '20px', md: '30px' },
+          justifyContent: 'space-evenly',
         }}
         >
           <Box sx={{ display: 'flex', alignItems: 'flex-end', minWidth: '80%' }}>
