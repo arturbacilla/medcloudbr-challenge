@@ -12,6 +12,17 @@ const themeOptions = createTheme({
       main: '#f50057',
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        contained: {
+          '&:hover': {
+            backgroundColor: '#00008f',
+          },
+        },
+      },
+    },
+  },
 });
 
 export default themeOptions;
