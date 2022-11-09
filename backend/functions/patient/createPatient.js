@@ -1,7 +1,10 @@
 // eslint-disable-next-line import/no-unresolved
 const AWS = require('aws-sdk');
+const bcrypt = require('bcryptjs');
+const { setResponse } = require('../../helpers/setResponse');
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
+const salt = bcrypt.genSaltSync(10);
 
 module.exports.handler = async (event) => {
   let response;
@@ -14,18 +17,13 @@ module.exports.handler = async (event) => {
       email: event.email,
       address: event.address,
       admin: false,
+      password: bcrypt.hashSync(event.password, salt),
     },
   };
   await dynamodb.put(params).promise().then(() => {
-    response = {
-      statusCode: 200,
-      body: JSON.stringify(`Patient ${event.name} created successfully!`),
-    };
+    response = setResponse(200, `Patient ${event.name} created successfully!`);
   }).catch((err) => {
-    response = {
-      statusCode: 500,
-      err,
-    };
+    response = setResponse(500, `${err}`);
   });
   return response;
 };

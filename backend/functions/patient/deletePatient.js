@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 const AWS = require('aws-sdk');
+const { setResponse } = require('../../helpers/setResponse');
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -17,21 +18,11 @@ module.exports.handler = async (event) => {
     },
   };
   await dynamodb.delete(params).promise().then((data) => {
-    response = {
-      statusCode: 204,
-      body: JSON.stringify(data),
-    };
+    response = setResponse(204, data);
   }).catch((err) => {
-    if (err.code === 'ConditionalCheckFailedException') {
-      response = {
-        statusCode: 404,
-        body: JSON.stringify(`Patient ${event.pathParameters.id} not found.`),
-      };
-    }
-    response = {
-      statusCode: 500,
-      body: JSON.stringify(err),
-    };
+    response = err.code === 'ConditionalCheckFailedException'
+      ? setResponse(404, `Patient ${event.pathParameters.id} not found.`)
+      : setResponse(500, `${err}`);
   });
   return response;
 };

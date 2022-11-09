@@ -9,7 +9,6 @@ provider:
     - Effect: Allow
       Action:
         - dynamodb:PutItem
-        - dynamodb:PutItem
         - dynamodb:DeleteItem
         - dynamodb:GetItem
         - dynamodb:Scan
@@ -24,16 +23,23 @@ provider:
     restApiResources:
       '/patients': kbsmpw
       '/patients/{id}': bffabg
+      '/login': zyw90i
+
+package:
+  include:
+    - node_modules/**
 
 functions:
   getPatients:
-    handler: getPatients.handler
+    handler: functions/patient/getPatients.handler
   getPatient:
-    handler: getPatient.handler
-  cretePatient:
-    handler: cretePatient.handler
+    handler: functions/patient/getPatient.handler
+  createPatient:
+    handler: functions/patient/createPatient.handler
   updatePatient:
-    handler: updatePatient.handler
+    handler: functions/patient/updatePatient.handler
   deletePatient:
-    handler: deletePatient.handler
+    handler: functions/patient/deletePatient.handler
+  login:
+    handler: functions/login/login.execute
   

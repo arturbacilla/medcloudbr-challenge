@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 const AWS = require('aws-sdk');
+const { setResponse } = require('../../helpers/setResponse');
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -12,22 +13,11 @@ module.exports.handler = async (event) => {
     },
   };
   await dynamodb.get(params).promise().then((data) => {
-    if (Object.keys(data).length !== 0) {
-      response = {
-        statusCode: 200,
-        body: JSON.stringify(data.Item),
-      };
-    } else {
-      response = {
-        statusCode: 404,
-        body: JSON.stringify(`Patient ${event.pathParameters.id} not found.`),
-      };
-    }
+    response = Object.keys(data).length !== 0
+      ? setResponse(200, data.Item)
+      : setResponse(404, `Patient ${event.pathParameters.id} not found.`);
   }).catch((err) => {
-    response = {
-      statusCode: 500,
-      body: JSON.stringify(err),
-    };
+    response = setResponse(500, `${err}`);
   });
   return response;
 };

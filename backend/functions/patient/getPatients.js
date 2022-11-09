@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 const AWS = require('aws-sdk');
+const { setResponse } = require('../../helpers/setResponse');
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -9,16 +10,11 @@ module.exports.handler = async (event) => {
   const params = {
     TableName: 'medcloudbr',
   };
-  await dynamodb.scan(params).promise().then((data) => {
-    response = {
-      statusCode: 200,
-      body: JSON.stringify(data.Items),
-    };
-  }).catch((err) => {
-    response = {
-      statusCode: 500,
-      body: JSON.stringify(err),
-    };
-  });
+  await dynamodb.scan(params).promise()
+    .then((data) => {
+      response = setResponse(200, data.Items);
+    }).catch((err) => {
+      response = setResponse(500, `${err}`);
+    });
   return response;
 };
