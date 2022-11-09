@@ -42,4 +42,6 @@ functions:
     handler: functions/patient/deletePatient.handler
   login:
     handler: functions/login/login.execute
+  authorizer:
+    handler: helpers/authorizer.authorizer
   
