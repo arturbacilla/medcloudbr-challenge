@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-// import Container from '@mui/material/Container';
+import Home from '@mui/icons-material/Home';
 import { Link } from '@mui/material';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -12,10 +12,7 @@ function Navigation() {
   const isHome = location.pathname === '/';
 
   return (
-    <Box sx={{
-      mt: 12, bgcolor: 'none',
-    }}
-    >
+    <Box sx={{ mt: 12, bgcolor: 'none' }}>
       <List sx={{
         p: '10px', display: 'flex', gap: '5px', justifyContent: 'flex-start',
       }}
@@ -33,9 +30,12 @@ function Navigation() {
           >
             {
               isHome ? 'Patients' : (
-                <Link href="/" color="inherit" underline="none" sx={{ fontSize: '1.3rem' }}>
-                  Patients
-                </Link>
+                <Box sx={{ display: 'flex' }}>
+                  <Home fontSize="small" />
+                  <Link href="/" color="inherit" underline="none" sx={{ fontSize: '1.3rem' }}>
+                    Patients
+                  </Link>
+                </Box>
               )
             }
           </Typography>

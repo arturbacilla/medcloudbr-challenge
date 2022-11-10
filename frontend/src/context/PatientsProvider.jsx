@@ -7,6 +7,8 @@ export default function PatientsProvider({ children }) {
   const [isEditing, setIsEditing] = useState(false);
   const [newPatientInfo, setNewPatientInfo] = useState({});
   const [userToken, setUserToken] = useState('');
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [selected, setSelected] = useState([]);
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   const values = {
     isAddingNew,
@@ -17,6 +19,10 @@ export default function PatientsProvider({ children }) {
     setNewPatientInfo,
     userToken,
     setUserToken,
+    shouldUpdate,
+    setShouldUpdate,
+    selected,
+    setSelected,
   };
   return (
     <main>

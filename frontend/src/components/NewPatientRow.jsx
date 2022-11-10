@@ -20,7 +20,7 @@ function NewPatientRow() {
   const token = localStorage.getItem('token');
 
   const {
-    setIsAddingNew, newPatientInfo, setNewPatientInfo,
+    setIsAddingNew, newPatientInfo, setNewPatientInfo, setShouldUpdate,
   } = useContext(PatientsContext);
   const [fieldIsValid, setFieldIsValid] = useState({
     name: false, email: false, birthdate: false, address: false,
@@ -49,6 +49,7 @@ function NewPatientRow() {
     const { statusCode } = await requestPost('/patients', { ...newPatientInfo, password: '' }, token);
     if (statusCode !== 200) return setTooltipOpen(true);
     setNewPatientInfo({});
+    setShouldUpdate(true);
     return setIsAddingNew(false);
   };
 

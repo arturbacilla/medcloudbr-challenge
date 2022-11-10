@@ -10,10 +10,24 @@ import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import PatientsContext from '../../context/PatientsContext';
+import { requestDelete } from '../../services/api';
 
 export default function PatientsTableToolbar(props) {
   const { numSelected } = props;
-  const { isAddingNew, setIsAddingNew } = useContext(PatientsContext);
+  const {
+    isAddingNew, setIsAddingNew, selected, setSelected, setShouldUpdate,
+  } = useContext(PatientsContext);
+
+  const handleDelete = () => {
+    const token = localStorage.getItem('token');
+    Promise.all(selected.map((patient) => requestDelete(`/patients/${patient}`, token).catch((e) => e)))
+      .then(() => {
+        setSelected([]);
+        setShouldUpdate(true);
+      })
+      // eslint-disable-next-line no-console
+      .catch((error) => console.log(`Erro ao executar ${error}`));
+  };
 
   return (
     <Toolbar
@@ -51,7 +65,7 @@ export default function PatientsTableToolbar(props) {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={() => handleDelete()}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>

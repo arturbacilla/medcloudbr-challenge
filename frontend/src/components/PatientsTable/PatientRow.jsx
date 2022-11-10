@@ -73,7 +73,7 @@ function PatientRow({ row, isItemSelected, labelId, handleClick }) {
           inputProps={{
             'aria-labelledby': labelId,
           }}
-          onClick={(event) => handleClick(event, row.name)}
+          onClick={(event) => handleClick(event, row.id)}
         />
       </TableCell>
       <TableCell

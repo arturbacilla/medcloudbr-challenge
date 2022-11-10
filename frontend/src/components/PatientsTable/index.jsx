@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,10 +9,13 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import PatientsTableHeader from './PatientsTableHeader';
 import PatientsTableToolbar from './PatientsTableToolbar';
+import LoadingTableData from './LoadingTableData';
 import NewPatientRow from '../NewPatientRow';
 import PatientsContext from '../../context/PatientsContext';
 import Navigation from '../Navigation';
 import PatientRow from './PatientRow';
+import { requestGet } from '../../services/api';
+import parseResult from '../../helpers/parseResult';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -31,13 +33,36 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export default function PatientsTable({ rows }) {
+export default function PatientsTable() {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('email');
-  const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { isAddingNew } = useContext(PatientsContext);
+  const {
+    isAddingNew, shouldUpdate, setShouldUpdate, selected, setSelected,
+  } = useContext(PatientsContext);
+  const [rows, setRows] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchPatients = async () => {
+    const token = localStorage.getItem('token');
+    const patientsList = await requestGet('/patients', token);
+    if (!Object.values(patientsList).some((key) => key === 'AxiosError')) {
+      const { body } = parseResult(patientsList);
+      return body;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    fetchPatients().then((data) => {
+      if (data) {
+        setRows(data);
+        setIsLoading(false);
+        setShouldUpdate(false);
+      }
+    });
+  }, [shouldUpdate]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -47,19 +72,19 @@ export default function PatientsTable({ rows }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = rows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -83,7 +108,7 @@ export default function PatientsTable({ rows }) {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -114,33 +139,37 @@ export default function PatientsTable({ rows }) {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-            <TableBody>
-              {rows.sort(getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+            {
+              isLoading ? <LoadingTableData /> : (
+                <TableBody>
+                  {rows.sort(getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const isItemSelected = isSelected(row.id);
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <PatientRow
-                      row={row}
-                      key={row.id}
-                      isItemSelected={isItemSelected}
-                      labelId={labelId}
-                      handleClick={handleClick}
-                    />
-                  );
-                })}
-              {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: (33 * emptyRows),
-                }}
-              >
-                <TableCell colSpan={6} />
-              </TableRow>
-              )}
-            </TableBody>
+                      return (
+                        <PatientRow
+                          row={row}
+                          key={row.id}
+                          isItemSelected={isItemSelected}
+                          labelId={labelId}
+                          handleClick={handleClick}
+                        />
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                  <TableRow
+                    style={{
+                      height: (33 * emptyRows),
+                    }}
+                  >
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                  )}
+                </TableBody>
+              )
+}
           </Table>
         </TableContainer>
         <TablePagination
@@ -156,17 +185,3 @@ export default function PatientsTable({ rows }) {
     </Box>
   );
 }
-
-PatientsTable.propTypes = {
-  rows: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      email: PropTypes.string,
-      name: PropTypes.string,
-      address: PropTypes.string,
-      birthdate: PropTypes.string,
-      password: PropTypes.string,
-      admin: PropTypes.bool,
-    }),
-  ).isRequired,
-};
