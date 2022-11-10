@@ -17,8 +17,10 @@ import newPatientSchema from '../schema/newPatientSchema';
 import { requestPost } from '../services/api';
 
 function NewPatientRow() {
+  const token = localStorage.getItem('token');
+
   const {
-    setIsAddingNew, newPatientInfo, setNewPatientInfo, userToken,
+    setIsAddingNew, newPatientInfo, setNewPatientInfo,
   } = useContext(PatientsContext);
   const [fieldIsValid, setFieldIsValid] = useState({
     name: false, email: false, birthdate: false, address: false,
@@ -41,11 +43,13 @@ function NewPatientRow() {
     setIsAddingNew(false);
   };
 
-  const submitAddNew = () => {
+  const submitAddNew = async () => {
     const allValid = Object.values(fieldIsValid).every((key) => key === true);
-    return allValid ? requestPost('/patients', newPatientInfo, userToken) : (
-      setTooltipOpen(true)
-    );
+    if (!allValid) return setTooltipOpen(true);
+    const { statusCode } = await requestPost('/patients', { ...newPatientInfo, password: '' }, token);
+    if (statusCode !== 200) return setTooltipOpen(true);
+    setNewPatientInfo({});
+    return setIsAddingNew(false);
   };
 
   return (

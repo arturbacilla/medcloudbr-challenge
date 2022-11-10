@@ -53,6 +53,7 @@ export const requestPost = async (endpoint, body, token) => {
         authorizationToken: token,
       },
     });
+    console.log(result.data);
     return result.data;
   } catch (error) {
     return error;

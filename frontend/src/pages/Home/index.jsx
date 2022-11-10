@@ -6,7 +6,7 @@ import parseResult from '../../helpers/parseResult';
 
 function Home() {
   const [rows, setRows] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const fetchPatients = async () => {
     const token = localStorage.getItem('token');
     const patientsList = await requestGet('/patients', token);
@@ -21,7 +21,7 @@ function Home() {
     fetchPatients().then((data) => {
       if (data) {
         setRows(data);
-        setIsLoading(true);
+        setIsLoading(false);
       }
     });
   }, []);
