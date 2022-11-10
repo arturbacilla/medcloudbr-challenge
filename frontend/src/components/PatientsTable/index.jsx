@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -13,21 +14,6 @@ import NewPatientRow from '../NewPatientRow';
 import PatientsContext from '../../context/PatientsContext';
 import Navigation from '../Navigation';
 import PatientRow from './PatientRow';
-
-function createData(id, name, email, birthdate, address) {
-  return {
-    id,
-    name,
-    email,
-    birthdate,
-    address,
-  };
-}
-
-const rows = [
-  createData('id-adm', 'Admin', 'admin@admin.com', '17/09/1992', 'Rua dos Bobos, 0'),
-  createData('id-2', 'Artur Bacilla', 'artur.bacilla1@gmail.com', '17/09/1992', 'Rua Parnaíba, 159, Curitiba, Paraná'),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -45,7 +31,7 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export default function PatientsTable() {
+export default function PatientsTable({ rows }) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('email');
   const [selected, setSelected] = useState([]);
@@ -138,7 +124,7 @@ export default function PatientsTable() {
                   return (
                     <PatientRow
                       row={row}
-                      key={row.name}
+                      key={row.id}
                       isItemSelected={isItemSelected}
                       labelId={labelId}
                       handleClick={handleClick}
@@ -146,13 +132,13 @@ export default function PatientsTable() {
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (33 * emptyRows),
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
+              <TableRow
+                style={{
+                  height: (33 * emptyRows),
+                }}
+              >
+                <TableCell colSpan={6} />
+              </TableRow>
               )}
             </TableBody>
           </Table>
@@ -170,3 +156,17 @@ export default function PatientsTable() {
     </Box>
   );
 }
+
+PatientsTable.propTypes = {
+  rows: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      email: PropTypes.string,
+      name: PropTypes.string,
+      address: PropTypes.string,
+      birthdate: PropTypes.string,
+      password: PropTypes.string,
+      admin: PropTypes.bool,
+    }),
+  ).isRequired,
+};

@@ -33,4 +33,17 @@ export const checkToken = async (token) => {
   }
 };
 
+export const requestGet = async (endpoint, token) => {
+  try {
+    const result = await api.get(endpoint, {
+      headers: {
+        authorizationToken: token,
+      },
+    });
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export default api;

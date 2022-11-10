@@ -14,6 +14,7 @@ provider:
         - dynamodb:Scan
         - dynamodb:Query
         - dynamodb:UpdateItem
+        - dynamodb:BatchWriteItem
       Resource:
         - "arn:aws:dynamodb:sa-east-1:928705830820:table/medcloudbr"
   apiName: medcloudbr
@@ -44,4 +45,6 @@ functions:
     handler: functions/login/login.execute
   authorizer:
     handler: helpers/authorizer.authorizer
+  addBatch:
+    handler: helpers/batchAddUsers.handler
   

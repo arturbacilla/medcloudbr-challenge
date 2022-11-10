@@ -14,8 +14,6 @@ import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Link from '@mui/material/Link';
 import { executeLogin } from '../../services/api';
-
-import './login.css';
 import parseResult from '../../helpers/parseResult';
 import validateUser from '../../helpers/validateUser';
 
