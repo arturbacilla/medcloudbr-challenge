@@ -46,4 +46,17 @@ export const requestGet = async (endpoint, token) => {
   }
 };
 
+export const requestPost = async (endpoint, body, token) => {
+  try {
+    const result = await api.post(endpoint, body, {
+      headers: {
+        authorizationToken: token,
+      },
+    });
+    return result.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export default api;

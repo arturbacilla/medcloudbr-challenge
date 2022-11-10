@@ -6,23 +6,33 @@ import parseResult from '../../helpers/parseResult';
 
 function Home() {
   const [rows, setRows] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const fetchPatients = async () => {
     const token = localStorage.getItem('token');
     const patientsList = await requestGet('/patients', token);
-    const { body } = parseResult(patientsList);
-    return body;
+    if (!Object.values(patientsList).some((key) => key === 'AxiosError')) {
+      const { body } = parseResult(patientsList);
+      return body;
+    }
+    return false;
   };
 
   useEffect(() => {
     fetchPatients().then((data) => {
-      setRows(data);
+      if (data) {
+        setRows(data);
+        setIsLoading(true);
+      }
     });
   }, []);
 
   return (
     <main>
       <Header />
-      <PatientsTable rows={rows} />
+      {
+        isLoading ? <span>Loading...</span>
+          : (<PatientsTable rows={rows} />)
+      }
     </main>
   );
 }

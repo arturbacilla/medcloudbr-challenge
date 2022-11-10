@@ -14,12 +14,16 @@ import Tooltip from '@mui/material/Tooltip';
 import headCells from './PatientsTable/structure';
 import PatientsContext from '../context/PatientsContext';
 import newPatientSchema from '../schema/newPatientSchema';
+import { requestPost } from '../services/api';
 
 function NewPatientRow() {
-  const { setIsAddingNew, newPatientInfo, setNewPatientInfo } = useContext(PatientsContext);
+  const {
+    setIsAddingNew, newPatientInfo, setNewPatientInfo, userToken,
+  } = useContext(PatientsContext);
   const [fieldIsValid, setFieldIsValid] = useState({
     name: false, email: false, birthdate: false, address: false,
   });
+  const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const handleChange = ({ target }) => {
     const { id, value } = target;
@@ -35,6 +39,13 @@ function NewPatientRow() {
   const handleCancelAdd = () => {
     setNewPatientInfo({});
     setIsAddingNew(false);
+  };
+
+  const submitAddNew = () => {
+    const allValid = Object.values(fieldIsValid).every((key) => key === true);
+    return allValid ? requestPost('/patients', newPatientInfo, userToken) : (
+      setTooltipOpen(true)
+    );
   };
 
   return (
@@ -134,9 +145,22 @@ function NewPatientRow() {
                 </Tooltip>
               </TableCell>
               <TableCell padding="none" sx={{ width: '2.5%' }}>
-                <IconButton color="success" sx={{ p: 0 }} aria-label="add new patient">
-                  <CheckBoxOutlinedIcon />
-                </IconButton>
+                <Tooltip
+                  open={tooltipOpen}
+                  onClose={() => setTooltipOpen(false)}
+                  title="Something wrong happened."
+                  placement="top"
+                  arrow
+                >
+                  <IconButton
+                    color="success"
+                    sx={{ p: 0 }}
+                    aria-label="add new patient"
+                    onClick={() => submitAddNew()}
+                  >
+                    <CheckBoxOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
               <TableCell padding="none" margin="none" sx={{ width: '2.5%' }}>
                 <IconButton

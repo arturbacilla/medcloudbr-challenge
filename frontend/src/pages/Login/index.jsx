@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -16,9 +16,11 @@ import Link from '@mui/material/Link';
 import { executeLogin } from '../../services/api';
 import parseResult from '../../helpers/parseResult';
 import validateUser from '../../helpers/validateUser';
+import PatientsContext from '../../context/PatientsContext';
 
 function Login() {
   const Navigate = useNavigate();
+  const { setUserToken } = useContext(PatientsContext);
   const [errorMsg, setErrorMsg] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [values, setValues] = useState({
@@ -66,6 +68,7 @@ function Login() {
     switch (statusCode) {
       case 200:
         setLocalStorage(body.token);
+        setUserToken(body.token);
         return Navigate('/');
       case 500:
         return setErrorMsg('Internal server error.');
