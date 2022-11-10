@@ -6,11 +6,11 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = async (event) => {
   let response;
-  const newInfo = JSON.parse(event.body);
+  const newInfo = event;
   const params = {
     TableName: 'medcloudbr',
     Key: {
-      id: event.pathParameters.id,
+      id: event.id,
     },
     ConditionExpression: 'attribute_exists(id) AND contains(id, :i)',
     UpdateExpression: 'SET #nm = :n, #bd = :bd, #em = :em, #ad = :ad, #adm = :adm',
@@ -22,7 +22,7 @@ module.exports.handler = async (event) => {
       '#adm': 'admin',
     },
     ExpressionAttributeValues: {
-      ':i': event.pathParameters.id,
+      ':i': event.id,
       ':n': newInfo.name,
       ':bd': newInfo.birthdate,
       ':em': newInfo.email,
@@ -35,7 +35,7 @@ module.exports.handler = async (event) => {
     response = setResponse(200, data.Attributes);
   }).catch((err) => {
     response = err.code === 'ConditionalCheckFailedException'
-      ? setResponse(404, `Patient ${event.pathParameters.id} not found.`)
+      ? setResponse(404, `Patient ${event.id} not found.`)
       : setResponse(500, `${err}`);
   });
   return response;

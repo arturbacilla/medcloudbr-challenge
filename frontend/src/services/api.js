@@ -59,6 +59,20 @@ export const requestPost = async (endpoint, body, token) => {
   }
 };
 
+export const requestPut = async (endpoint, body, token) => {
+  try {
+    const result = await api.put(endpoint, body, {
+      headers: {
+        authorizationToken: token,
+      },
+    });
+    return result.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 export const requestDelete = async (endpoint, token) => {
   try {
     const result = await api.delete(endpoint, {

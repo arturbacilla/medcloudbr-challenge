@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
@@ -9,9 +9,12 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
+import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from 'react-router-dom';
 import newPatientSchema from '../../schema/newPatientSchema';
 import headCells from './structure';
+import PatientsContext from '../../context/PatientsContext';
+import { requestPut } from '../../services/api';
 
 const initialValidation = {
   name: true, email: true, birthdate: true, address: true,
@@ -24,6 +27,10 @@ function PatientRow({ row, isItemSelected, labelId, handleClick }) {
   const [newPatientInfo, setNewPatientInfo] = useState({});
   const [editFieldIsValid, setEditFieldIsValid] = useState(initialValidation);
   const [showEditButton, setShowEditButton] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const {
+    setShouldUpdate,
+  } = useContext(PatientsContext);
 
   const checkSchema = (id, value) => {
     const schemaValidate = newPatientSchema[id].validate(value);
@@ -52,6 +59,18 @@ function PatientRow({ row, isItemSelected, labelId, handleClick }) {
   const handleDiscard = () => {
     setIsEditing(false);
     setEditFieldIsValid(initialValidation);
+  };
+
+  const submitEdit = async (id) => {
+    const token = localStorage.getItem('token');
+    const allValid = Object.values(editFieldIsValid).every((key) => key === true);
+    if (!allValid) return setTooltipOpen(true);
+    const newInfo = { ...newPatientInfo, id, admin: false };
+    const { statusCode } = await requestPut(`/patients/${id}`, newInfo, token);
+    if (statusCode !== 200) return setTooltipOpen(true);
+    setNewPatientInfo({});
+    setIsEditing(false);
+    return setShouldUpdate(true);
   };
 
   return (
@@ -172,9 +191,20 @@ function PatientRow({ row, isItemSelected, labelId, handleClick }) {
           ) : (
             isEditing && (
             <>
-              <IconButton sx={{ p: 0 }}>
-                <CheckBoxOutlinedIcon sx={{ fontSize: '1.5rem' }} color="success" />
-              </IconButton>
+              <Tooltip
+                open={tooltipOpen}
+                onClose={() => setTooltipOpen(false)}
+                title="Something wrong happened."
+                placement="top"
+                arrow
+              >
+                <IconButton sx={{ p: 0 }} onClick={() => submitEdit(row.id)}>
+                  <CheckBoxOutlinedIcon
+                    sx={{ fontSize: '1.5rem' }}
+                    color="success"
+                  />
+                </IconButton>
+              </Tooltip>
               <IconButton sx={{ p: 0 }} onClick={() => handleDiscard()}>
                 <DisabledByDefaultOutlinedIcon sx={{ fontSize: '1.5rem' }} color="error" />
               </IconButton>
