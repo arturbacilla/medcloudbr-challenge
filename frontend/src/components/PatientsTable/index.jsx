@@ -111,7 +111,6 @@ export default function PatientsTable() {
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
   };
 
@@ -176,19 +175,15 @@ export default function PatientsTable() {
                           />
                         );
                       })
-}
+                  }
                   {emptyRows > 0 && (
-                  <TableRow
-                    style={{
-                      height: (33 * emptyRows),
-                    }}
-                  >
+                  <TableRow style={{ height: (33 * emptyRows) }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                   )}
                 </TableBody>
               )
-}
+            }
           </Table>
         </TableContainer>
         <TablePagination

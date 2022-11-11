@@ -9,13 +9,13 @@ module.exports.handler = async (event) => {
   const params = {
     TableName: 'medcloudbr',
     Key: {
-      id: event.pathParameters.id,
+      id: event.params.path.id,
     },
   };
   await dynamodb.get(params).promise().then((data) => {
     response = Object.keys(data).length !== 0
       ? setResponse(200, data.Item)
-      : setResponse(404, `Patient ${event.pathParameters.id} not found.`);
+      : setResponse(404, `Patient ${event.params.path.id} not found.`);
   }).catch((err) => {
     response = setResponse(500, `${err}`);
   });
