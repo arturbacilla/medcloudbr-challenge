@@ -57,7 +57,8 @@ export default function PatientsTable() {
   useEffect(() => {
     fetchPatients().then((data) => {
       if (data) {
-        setRows(data);
+        const noAdmin = data.filter((patient) => !patient.admin);
+        setRows(noAdmin);
         setIsLoading(false);
         setShouldUpdate(false);
       }

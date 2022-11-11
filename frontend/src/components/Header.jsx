@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,6 +19,7 @@ const settings = ['...', 'Logout'];
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const Navigate = useNavigate();
   validateUser('Deny', '/login');
 
   const handleOpenNavMenu = (event) => {
@@ -35,9 +37,19 @@ function Header() {
     setAnchorElUser(null);
   };
 
+  const logout = () => {
+    localStorage.removeItem('token');
+    return Navigate('/login');
+  };
+
+  const settingsActions = [
+    handleCloseUserMenu,
+    logout,
+  ];
+
   return (
     <AppBar position="fixed">
-      <Container maxWidth="xl">
+      <Container sx={{ minWidth: '100%' }}>
         <Toolbar variant="dense" disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -121,8 +133,8 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+              {settings.map((setting, i) => (
+                <MenuItem key={setting} onClick={settingsActions[i]}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
