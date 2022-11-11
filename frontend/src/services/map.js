@@ -12,7 +12,7 @@ export const getGeoFromAddress = async (address) => {
     return result.data.features[0].geometry.coordinates;
   } catch (error) {
     console.log(error);
-    return [0,0];
+    return [0, 0];
   }
 };
 
