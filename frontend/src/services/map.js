@@ -11,8 +11,8 @@ export const getGeoFromAddress = async (address) => {
     const result = await mapApi.get(`${encodeURIComponent(address)}&apiKey=${apiKey}`);
     return result.data.features[0].geometry.coordinates;
   } catch (error) {
-    // console.log(error);
-    return error;
+    console.log(error);
+    return [0,0];
   }
 };
 
