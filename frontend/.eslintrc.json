@@ -18,6 +18,7 @@
         "react"
     ],
     "rules": {
+        "object-curly-newline": "off",
         "import/no-unresolved": "error",
         "jsx-quotes": [
             "error",

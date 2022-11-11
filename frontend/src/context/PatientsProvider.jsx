@@ -9,6 +9,7 @@ export default function PatientsProvider({ children }) {
   const [userToken, setUserToken] = useState('');
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [search, setSearch] = useState('');
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   const values = {
     isAddingNew,
@@ -23,6 +24,8 @@ export default function PatientsProvider({ children }) {
     setShouldUpdate,
     selected,
     setSelected,
+    search,
+    setSearch,
   };
   return (
     <main>

@@ -15,7 +15,7 @@ import { requestDelete } from '../../services/api';
 export default function PatientsTableToolbar(props) {
   const { numSelected } = props;
   const {
-    isAddingNew, setIsAddingNew, selected, setSelected, setShouldUpdate,
+    isAddingNew, setIsAddingNew, selected, setSelected, setShouldUpdate, setSearch,
   } = useContext(PatientsContext);
 
   const handleDelete = () => {
@@ -27,6 +27,11 @@ export default function PatientsTableToolbar(props) {
       })
       // eslint-disable-next-line no-console
       .catch((error) => console.log(`Erro ao executar ${error}`));
+  };
+
+  const handleChange = ({ target }) => {
+    const { value } = target;
+    setSearch(value);
   };
 
   return (
@@ -55,11 +60,12 @@ export default function PatientsTableToolbar(props) {
         </Typography>
       ) : (
         <TextField
-          id="outlined-helperText"
+          id="search"
           size="small"
           margin="dense"
           label="Search"
-          placeholder="Name"
+          placeholder="Name, email, birthdate, address"
+          onChange={(e) => handleChange(e)}
         />
       )}
 

@@ -17,12 +17,20 @@ import PatientRow from './PatientRow';
 import { requestGet } from '../../services/api';
 import parseResult from '../../helpers/parseResult';
 
+const toTimestamp = (dateString) => {
+  // ref https://stackoverflow.com/a/33299764/12763774
+  const dateParts = dateString.split('/');
+  const date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+  return Date.parse(date) / 1000;
+};
+
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
+  if (orderBy === 'birthdate') {
+    if (toTimestamp(b[orderBy]) < toTimestamp(a[orderBy])) return -1;
+    if (toTimestamp(b[orderBy]) > toTimestamp(a[orderBy])) return 1;
+  } else {
+    if (b[orderBy] < a[orderBy]) return -1;
+    if (b[orderBy] > a[orderBy]) return 1;
   }
   return 0;
 }
@@ -39,7 +47,12 @@ export default function PatientsTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const {
-    isAddingNew, shouldUpdate, setShouldUpdate, selected, setSelected,
+    isAddingNew,
+    shouldUpdate,
+    setShouldUpdate,
+    selected,
+    setSelected,
+    search,
   } = useContext(PatientsContext);
   const [rows, setRows] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +70,9 @@ export default function PatientsTable() {
   useEffect(() => {
     fetchPatients().then((data) => {
       if (data) {
-        const noAdmin = data.filter((patient) => !patient.admin);
+        const noAdmin = data
+          .filter((patient) => !patient.admin)
+          .map(({ id, email, name, birthdate, address }) => ({ id, email, name, birthdate, address }));
         setRows(noAdmin);
         setIsLoading(false);
         setShouldUpdate(false);
@@ -143,22 +158,25 @@ export default function PatientsTable() {
             {
               isLoading ? <LoadingTableData /> : (
                 <TableBody>
-                  {rows.sort(getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
-                      const isItemSelected = isSelected(row.id);
-                      const labelId = `enhanced-table-checkbox-${index}`;
+                  {
+                    rows.filter((row) => Object.values(row).slice(1).some((value) => value.includes(search)))
+                      .sort(getComparator(order, orderBy))
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((row, index) => {
+                        const isItemSelected = isSelected(row.id);
+                        const labelId = `enhanced-table-checkbox-${index}`;
 
-                      return (
-                        <PatientRow
-                          row={row}
-                          key={row.id}
-                          isItemSelected={isItemSelected}
-                          labelId={labelId}
-                          handleClick={handleClick}
-                        />
-                      );
-                    })}
+                        return (
+                          <PatientRow
+                            row={row}
+                            key={row.id}
+                            isItemSelected={isItemSelected}
+                            labelId={labelId}
+                            handleClick={handleClick}
+                          />
+                        );
+                      })
+}
                   {emptyRows > 0 && (
                   <TableRow
                     style={{
